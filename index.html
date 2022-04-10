@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<title>Microlending Corporation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+<link rel="stylesheet" href="mainStyle.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
+
+<body onload="openLoginModal()">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+  </script>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <div class="modalHeader">
+        <h2>Login</h2>
+      </div>
+      <div class="modal-body">
+        <form class="form" autocomplete="off" onsubmit="loginVerification()">
+          <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="logUser" placeholder="Enter Username" required>
+          </div>
+          <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="logPass" placeholder="Enter Password" required>
+          </div>
+
+          <div class="form_action--button">
+            <input type="submit" value="Login"> 
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="sidebar">
+    <link rel="stylesheet" href="tabStyle.css">
+
+    <div class="logoContent">
+      <div class="logo">
+        <i class='bx bxs-business'></i>
+        <div class="logoName">Lending Company</div>
+      </div>
+    </div>
+
+    <ul class="navList">
+
+      <li>
+        <a href="#tab2">
+          <i class='bx bxs-report'></i>
+          <span class="linkName">Reports</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#tab3">
+          <i class='bx bx-credit-card'></i>
+          <span class="linkName">Loans</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#tab4">
+          <i class='bx bx-receipt'></i>
+          <span class="linkName">Payments</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#tab6">
+          <i class='bx bxs-user-account'></i>
+          <span class="linkName">Clients</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#tab7">
+          <i class='bx bxs-user-circle'></i>
+          <span class="linkName">User</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="profileContent">
+      <div class="profile">
+        <div class="profileDetails">
+          <img src="nate.jpg" alt="">
+          <div class="nameWork">
+            <div class="name">Nathan Naanep</div>
+            <div class="job">Student</div>
+          </div>
+        </div>
+        <i class='bx bxs-log-out-circle' id="logOut"></i>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="tab_container">
+
+    <link rel="stylesheet" href="contentStyle.css">
+
+    <!-- REPORT -->
+    <div id="tab2" class="tab_content" style="display:none;">
+      <div class="grid">
+        <div class="gridItem">
+          <div class="gridHeader">
+            <h1>Daily Payment</h1>
+          </div>
+
+          <div class="gridBody">
+            <input type="date" name="DateSelection" id="dailyPaymentDate" class="reportDate"
+              onchange="daySelectorChange('dailyPaymentList')">
+            <span id="dailyTotalPayment" class="totalReport"> </span>
+
+            <table class="reportList" id="dailyPaymentList">
+              <thead>
+                <tr>
+                  <th>Clients</th>
+                  <th>Paid Amount</th>
+                </tr>
+              </thead>
+
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="gridItem">
+          <div class="gridHeader">
+            <h1>Daily Loan</h1>
+          </div>
+
+          <div class="gridBody">
+            <input type="date" name="DateSelection" id="dailyLoanDate" class="reportDate"
+              onchange="daySelectorChange('dailyLoanList')">
+            <span id="dailyTotalLoan" class="totalReport"> </span>
+
+            <table class="reportList" id="dailyLoanList">
+              <thead>
+                <tr>
+                  <th>Clients</th>
+                  <th>Loan Amount</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="gridItem">
+
+          <div class="gridHeader">
+            <h1>Monthly Payment</h1>
+          </div>
+
+          <div class="gridBody">
+            <select name="MonthlySelection" id="monthlyPaymentDate" class="reportSelect"
+              onchange="monthSelectorChange(this)">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+            </select>
+            <span id="monthlyTotalPayment" class="totalReport">
+
+            </span>
+
+            <canvas id="monthlyPaymentChart"></canvas>
+          </div>
+        </div>
+
+        <div class="gridItem">
+
+          <div class="gridHeader">
+            <h1>Monthly Loan</h1>
+          </div>
+
+          <div class="gridBody">
+            <select name="MonthlySelection" id="monthlyLoanDate" class="reportSelect"
+              onchange="monthSelectorChange(this)">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+            </select>
+            <span id="dailyTotalLoan" class="totalReport">
+
+            </span>
+            <canvas id="monthlyLoanChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- LOAN -->
+    <div id="tab3" class="tab_content" style="display:none;">
+
+      <div class="header">
+        <h1>Loan List</h1>
+      </div>
+
+      <button id="loanModalBtn" class="button">Add Loan</button>
+
+      <!-- USER PANEL -->
+      <table class="list" id="loanList">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Company</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+        </tbody>
+      </table>
+
+      <table class="list" id="clientListForLoan" hidden>
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Company</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Nate Naanep</td>
+            <td>Cento</td>
+          </tr>
+
+          <tr>
+            <td>Juan Dela Cruz</td>
+            <td>Ingenuity</td>
+          </tr>
+
+          <tr>
+            <td>CongTV</td>
+            <td>Tribo Wakwak</td>
+          </tr>
+
+          <tr>
+            <td>JunnieBoy</td>
+            <td>Paro Paro G</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <div id="loanModalForm" class="modal">
+        <div class="modal-content">
+          <div class="modalHeader">
+            <span class="close" id="closeLoanModalBtn">&times;</span>
+            <h2 id="loanModalHeaderText"></h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" autocomplete="on" onsubmit="loanSubmitForm()">
+
+              <div>
+                <label for="clientSelector">Client</label>
+                <select name="clientSelector" id="loanClientSelector" required>
+                  <!-- <option value="Juan Dela Cruz">Juan Dela Cruz</option>
+                            <option value="John Cross">John Cross</option> -->
+                </select>
+              </div>
+              <div>
+                <label for="loanAmount">Loan Amount</label>
+                <input type="number" name="loanAmount" id="loanLoanAmount" placeholder="Enter amount to be loan"
+                  required>
+              </div>
+              <div>
+                <label for="loanType">Loan Type</label>
+                <select name="loanType" id="loanLoanType" required>
+                  <option value="Emergency">Emergency</option>
+                  <option value="Medical Treatment">Medical Treatment</option>
+                  <option value="Electronic Appliances">Electronic Appliances</option>
+                  <option value="Mortages">Mortages</option>
+                </select>
+              </div>
+              <div>
+                <label for="loanDate">Date of Loan</label>
+                <input type="date" name="loanDate" id="loanLoanDate" required>
+              </div>
+              <div id="officerView">
+                <label for="officer">Approving Officer</label>
+                <input type="text" name="officer" id="officer" readonly>
+              </div>
+              <div class="form_action--button" id="loanFormBtn">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div id="tab4" class="tab_content" style="display:none;">
+      <div class="header">
+        <h1>Payment List</h1>
+      </div>
+
+      <button id="paymentModalBtn" class="button">Add Payment</button>
+
+      <table class="list" id="paymentList">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Company</th>
+            <th class="hiddenColumn">Loan Amount</th>
+            <th class="hiddenColumn">Loan Date</th>
+            <th>Payment Date</th>
+            <th class="hiddenColumn">Num of Date</th>
+            <th>Amount Paid</th>
+            <th class="hiddenColumn">Balance</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- HIDE COLUMNS -->
+          <style type="text/css">
+            #paymentList td:nth-child(3),
+            #paymentList td:nth-child(4),
+            #paymentList td:nth-child(6),
+            #paymentList td:nth-child(8) {
+              display: none;
+            }
+          </style>
+
+          <!-- <tr>
+                <td>Nate Naanep</td>    0
+                <td>Company</td>        1
+                <td>loan amount</td>    2
+                <td>loan date</td>      3 
+                <td>payment date</td>   4
+                <td>number of days</td> 5
+                <td>payment amount</td> 6
+                <td>balance</td>        7
+                <td>officer</td>        8
+            </tr> -->
+
+        </tbody>
+      </table>
+
+      <table class="list" id="loanListForPayment" hidden>
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Loan Amount</th>
+            <th>Date</th>
+            <td>Company</td>
+          </tr>
+        </thead>
+
+        <tbody>
+
+
+          <tr>
+            <td>Nate Naanep</td>
+            <td>222222</td>
+            <td>2022-03-29</td>
+            <td>Paro Paro G</td>
+          </tr>
+
+          <tr>
+            <td>Juan Dela Cruz</td>
+            <td>222222</td>
+            <td>2022-03-27</td>
+            <td>Tribo Wakwak</td>
+          </tr>
+
+          <tr>
+            <td>CongTV</td>
+            <td>333333</td>
+            <td>2022-03-28</td>
+            <td>Alpha Kokak</td>
+          </tr>
+
+          <tr>
+            <td>JunnieBoy</td>
+            <td>444444</td>
+            <td>2022-03-30</td>
+            <td>Puro Puro Gin</td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <div id="paymentModalForm" class="modal">
+        <div class="modal-content">
+          <div class="modalHeader">
+            <span class="close" id="closePaymentModalBtn">&times;</span>
+            <h2 id="paymentModalHeaderText"></h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" autocomplete="on" onsubmit="paymentSubmitForm()">
+
+              <div>
+                <label for="clientSelector">Client</label>
+                <select name="clientSelector" id="paymentClientSelector" onchange="getLoanDetailsForPayment()" required>
+                </select>
+              </div>
+              <div>
+                <label for="loanAmount">Loan Amount</label>
+                <input type="text" name="loanAmount" id="paymentLoanAmount" readonly>
+              </div>
+              <div>
+                <label for="loanDate">Loaned Date</label>
+                <input type="text" name="loanDate" id="paymentLoanDate" readonly>
+              </div>
+              <div>
+                <label for="interest">Interest Rate</label>
+                <input type="text" value="5%" readonly>
+              </div>
+              <div>
+                <label for="paymentDate">Date of Payment</label>
+                <input type="date" name="paymentDate" id="paymentPaymentDate" onchange="computeDaysAndBalance()"
+                  required>
+              </div>
+              <div>
+                <label for="numOfDays">Number of Days</label>
+                <input type="number" name="numOfDays" id="paymentNumOfDays" readonly>
+              </div>
+              <div>
+                <label for="payAmount">Payment Amount</label>
+                <input type="number" name="payAmount" id="paymentPayAmount" oninput="updateBalance(this.value)">
+              </div>
+              <div>
+                <label for="balance">Balance</label>
+                <input type="text" name="balance" id="paymentBalance" readonly>
+              </div>
+              <div>
+                <label for="officer">Approving Officer</label>
+                <input type="text" name="officer" id="paymentOfficer" readonly>
+              </div>
+
+              <div class="form_action--button" id="paymentFormBtn">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div id="tab6" class="tab_content" style="display:none;">
+      <div class="header">
+        <h1>Client List</h1>
+      </div>
+
+      <button id="clientModalBtn" class="button">Add Client</button>
+
+      <!-- USER PANEL -->
+      <table class="list" id="clientList">
+        <thead>
+          <tr>
+            <th class="hiddenColumn">Last Name</th>
+            <th class="hiddenColumn">Middle Name</th>
+            <th class="hiddenColumn">First Name</th>
+            <th>Full Name</th>
+            <th class="hiddenColumn">Gender</th>
+            <th class="hiddenColumn">Birthdate</th>
+            <th>Contact No.</th>
+            <th class="hiddenColumn">Address</th>
+            <th>Company</th>
+            <th class="hiddenColumn">Company Adress</th>
+            <th class="hiddenColumn">Company Contact No.</th>
+            <th class="hiddenColumn">Position</th>
+            <th class="hiddenColumn">Gross Monthly Income</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- HIDE COLUMNS -->
+          <style type="text/css">
+            #clientList td:nth-child(1),
+            #clientList td:nth-child(2),
+            #clientList td:nth-child(3),
+            #clientList td:nth-child(5),
+            #clientList td:nth-child(6),
+            #clientList td:nth-child(8),
+            #clientList td:nth-child(10),
+            #clientList td:nth-child(11),
+            #clientList td:nth-child(12),
+            #clientList td:nth-child(13),
+            #clientList td:nth-child(14) {
+              display: none;
+            }
+          </style>
+          <!-- <tr>
+                <td>Naanep</td>
+                <td>Gagula</td>
+                <td>Nathan </td>
+                <td>Nathan G. Naanep</td>
+                <td>Male</td>
+                <td>March 25,2000</td>
+                <td>123</td>
+                <td>Kor</td>
+                <td>Ateneo</td>
+                <td>DVO</td>
+                <td>456</td>
+                <td>Student</td>
+                <td>Income</td>
+            </tr> -->
+        </tbody>
+      </table>
+
+      <div id="clientModalForm" class="modal">
+        <div class="modal-content">
+          <div class="modalHeader">
+            <span class="close" id="closeClientBtnModalForm">&times;</span>
+            <h2 id="clientModalHeaderText"></h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" autocomplete="on" onsubmit="clientSubmitForm()">
+              <fieldset>
+                <legend>Personal Details</legend>
+                <div>
+                  <label for="lname">Last Name</label>
+                  <input type="text" name="lname" id="clientLname" placeholder="Last Name" required>
+                </div>
+                <div>
+                  <label for="mname">Middle Name</label>
+                  <input type="text" name="mname" id="clientMname" placeholder="Middle Name" required>
+                </div>
+                <div>
+                  <label for="fname">First Name</label>
+                  <input type="text" name="fname" id="clientFname" placeholder="First Name" required>
+                </div>
+                <!-- FULL NAME -->
+                <div>
+                  <label for="gender">Gender</label>
+                  <select name="gender" id="clientGender" required>
+                    <option value=male>Male</option>
+                    <option value=female>Female</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="birthdate">Birthdate</label>
+                  <input type="date" name="birthdate" id="clientBday" required>
+                </div>
+
+                <div>
+                  <label for="contactNum">Contact No.</label>
+                  <input type="number" name="contactNum" id="clientContactNum" placeholder="Contact Number" required>
+                </div>
+                <div>
+                  <label for="address">Address</label>
+                  <input type="text" name="address" id="clientAddress" placeholder="Address" required>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Company Details</legend>
+
+                <div>
+                  <label for="company">Company</label>
+                  <input type="text" name="company" id="clientCompany" placeholder="Company" required>
+                </div>
+                <div>
+                  <label for="companyAdress">Company Adress</label>
+                  <input type="text" name="companyAdress" id="clientCompanyAdress" placeholder="Company Address"
+                    required>
+                </div>
+                <div>
+                  <label for="companyContact">Company Contact</label>
+                  <input type="text" name="companyContact" id="clientCompanyContact"
+                    placeholder="Company Contact Number" required>
+                </div>
+                <div>
+                  <label for="position">Position</label>
+                  <input type="text" name="position" id="clientPosition" placeholder="Company Position" required>
+                </div>
+                <div>
+                  <label for="income">Gross Monthly Income</label>
+                  <input type="number" name="income" id="clientIncome" placeholder="Gross Monthly Income" required>
+                </div>
+              </fieldset>
+
+              <div class="form_action--button" id="clientFormBtn">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER -->
+    <div id="tab7" class="tab_content" style="display:none;">
+
+      <div class="header">
+        <h1>User List</h1>
+      </div>
+
+      <button id="userBtnModal" class="button">Add User</button>
+
+      <!-- USER PANEL -->
+      <table class="list" id="userList">
+        <thead>
+          <tr>
+            <th class="hiddenColumn">username</th>
+            <th class="hiddenColumn">password</th>
+            <th class="hiddenColumn">Last Name</th>
+            <th class="hiddenColumn">Middle Name</th>
+            <th class="hiddenColumn">First Name</th>
+            <th>Full Name</th>
+            <th class="hiddenColumn">Gender</th>
+            <th class="hiddenColumn">Birthdate</th>
+            <th class="hiddenColumn">Contact No.</th>
+            <th class="hiddenColumn">Address</th>
+            <th>Position</th>
+            <th>User Role</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <!-- HIDE COLUMNS -->
+          <style type="text/css">
+            #userList td:nth-child(1),
+            #userList td:nth-child(2),
+            #userList td:nth-child(3),
+            #userList td:nth-child(4),
+            #userList td:nth-child(5),
+            #userList td:nth-child(7),
+            #userList td:nth-child(8),
+            #userList td:nth-child(9),
+            #userList td:nth-child(10) {
+              display: none;
+            }
+          </style>
+
+        </tbody>
+      </table>
+
+      <div id="userModal" class="modal">
+        <div class="modal-content">
+          <div class="modalHeader">
+            <span class="close" id="closeUserModalBtn">&times;</span>
+            <h2 id="userModalHeader"></h2>
+          </div>
+          <div class="modal-body">
+            <form class="form" autocomplete="on" onsubmit="userSubmitForm()">
+              <fieldset>
+                <legend>User Account</legend>
+                <div>
+                  <label for="username">Username</label>
+                  <input type="text" name="username" id="userUserName" placeholder="Enter Username" required>
+                </div>
+                <div>
+                  <label for="password">Password</label>
+                  <input type="text" name="password" id="userPassword" placeholder="Enter Password" required>
+                </div>
+              </fieldset>
+              <fieldset>
+                <legend>Personal Details</legend>
+                <div>
+                  <label for="lname">Last Name</label>
+                  <input type="text" name="lname" id="userLname" placeholder="Last Name" required>
+                </div>
+                <div>
+                  <label for="mname">Middle Name</label>
+                  <input type="text" name="mname" id="userMname" placeholder="Middle Name" required>
+                </div>
+                <div>
+                  <label for="fname">First Name</label>
+                  <input type="text" name="fname" id="userFname" placeholder="First Name" required>
+                </div>
+                <!-- FULL NAME -->
+                <div>
+                  <label for="gender">Gender</label>
+                  <select name="gender" id="userGender" required>
+                    <option value=male>Male</option>
+                    <option value=female>Female</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="birthdate">Birthdate</label>
+                  <input type="date" name="birthdate" id="userBday" required>
+                </div>
+
+                <div>
+                  <label for="contactNum">Contact No.</label>
+                  <input type="number" name="contactNum" id="userContactNum" placeholder="Contact Number" required>
+                </div>
+                <div>
+                  <label for="address">Address</label>
+                  <input type="text" name="address" id="userAddress" placeholder="Enter Address" required>
+                </div>
+                <div>
+                  <label for="position">Position</label>
+                  <input type="text" name="position" id="userPosition" placeholder="Set User Position" required>
+                </div>
+                <div>
+                  <label for="role">User Role</label>
+                  <input type="text" name="role" id="userRole" placeholder="Set User Role" required>
+                </div>
+              </fieldset>
+
+
+              <div class="form_action--button" id="userFormBtn">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="contentScript.js"></script>
+
+  <script>
+    jQuery(document).ready(function ($) {
+      $('.tab_content').hide();
+      $('ul.navList li:first').addClass('active').show();
+      $('.tab_content:first').show();
+      $('ul.navList li').click(function () {
+        $('ul.navList li').removeClass('active');
+        $(this).addClass('active');
+        $('.tab_content').hide();
+        var activeTab = $(this).find('a').attr('href');
+        $(activeTab).fadeIn();
+        return false;
+      });
+    });
+  </script>
+
+</body>
+
+</html>

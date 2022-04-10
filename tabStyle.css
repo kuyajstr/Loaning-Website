@@ -1,0 +1,132 @@
+  .sidebar .logoContent .logo{
+    color: white;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .sidebar .logo i{
+    font-size: 32px;
+    margin-right: 5px;
+  }
+
+  .logoContent .logo .logoName{
+      font-size: 22px;
+      font-weight: 300;
+  }
+
+  .sidebar #btn{
+      position: absolute;
+      color: whitesmoke;
+      left: 90%;
+      top: 6px;
+      font-size: 20px;
+      height: 50px;
+      width: 50px;
+      text-align: center;
+      line-height: 50px;
+      transform: translateX(-50%);
+  }
+
+  .sidebar ul{
+      margin-top: 20px;
+  }
+
+  .sidebar ul li{
+      position: relative;
+      height: 50px;
+      width: 100%;
+      margin: 0 5px;
+      list-style-type: none; 
+      line-height: 50px;
+  }
+
+  .sidebar ul li a{
+      font-size: 21px;
+      color: white;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      transition: all 0.5s ease;
+      border-radius: 12px;
+      align-items: center;
+  }
+
+  .sidebar ul li a:hover{
+      color: black;
+      background-color: white;
+  }
+
+  .sidebar ul li a i {
+      height: 50px;
+      min-width: 50px;
+      border-radius: 12px;
+      line-height: 50px;
+      text-align: center;
+      font-size: 24px;
+  }
+
+  .sidebar .profileContent{
+      position: absolute;
+      color: aliceblue;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+  }
+
+  .sidebar .profileContent .profile{
+      position: relative;
+      padding: 10px 6px;
+      height: 60px;
+  }
+
+  .sidebar .profileContent .profile .profileDetails{
+      display: flex;
+      align-items: center;
+  }
+
+  .profile .profileDetails img{
+      height: 50px;
+      width: 50px;
+      object-fit: cover;
+      border-radius: 12px;
+  }
+
+  .profile .profileDetails .nameWork{
+      margin-left:  10px;
+  }
+
+  .profile .profileDetails .name{
+    font-size: 18px;
+    font-weight: 400;
+  }
+
+  .profile .profileDetails .job{
+    font-size: 14px;
+  }
+
+  .profile #logOut{
+      position: absolute;
+      left: 90%;
+      bottom: 5px;
+      font-size: 22px;
+      transform: translateX(-50%);
+      min-width: 50px;
+      line-height: 50px;
+  }
+
+  .profile #logOut:hover,
+  .profile #logOut:focus{
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+  
+
+
+
+
+
